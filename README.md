@@ -19,27 +19,40 @@ JRAのGⅠ・GⅡを対象に、**1〜3着の予想**と**予算内での馬券�
 <button type="button" id="copy-chatgpt-launch-message" hidden>起動メッセージをコピー</button>
 <span id="copy-chatgpt-launch-status" role="status"></span>
 
+Chatモードでも、同じ一文で始められます。独立したエージェントを起動できない環境では、1つのチャット内でA〜Dの観点を順に適用してください。ページを開けない場合は、このREADMEの本文を貼り付けてください。ウェブ検索も使えない場合は、出馬表・馬場・オッズなど、分析に必要な未確認情報の提示を求めてください。
+
+### 前日に予想したレースを当日に見直す
+
+前日は「前日版」として予想を出し、開催当日は**前日と同じチャット**に次のメッセージを送ってください。
+
+<blockquote>
+<p id="chatgpt-race-day-message">同じレース・予算で、当日版の予想を出してください。JRAの馬場状態、天気、取消・乗り替わり、馬体重、同日のレース傾向、最新オッズを確認し、前日の結論を前提にせず再評価してください。その後、前日版と比べて、1〜3着予想・買い目・購入総額で変わった点と理由を示してください。</p>
+</blockquote>
+
+<button type="button" id="copy-chatgpt-race-day-message" hidden>当日版の依頼をコピー</button>
+<span id="copy-chatgpt-race-day-status" role="status"></span>
+
 <script>
 (() => {
-  const message = document.getElementById('chatgpt-launch-message');
-  const button = document.getElementById('copy-chatgpt-launch-message');
-  const status = document.getElementById('copy-chatgpt-launch-status');
-
   if (!navigator.clipboard?.writeText) return;
 
-  button.hidden = false;
-  button.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(message.textContent.trim());
-      status.textContent = 'コピーしました';
-    } catch {
-      status.textContent = 'コピーできませんでした。上の文章を選択してコピーしてください。';
-    }
-  });
+  for (const kind of ['launch', 'race-day']) {
+    const message = document.getElementById(`chatgpt-${kind}-message`);
+    const button = document.getElementById(`copy-chatgpt-${kind}-message`);
+    const status = document.getElementById(`copy-chatgpt-${kind}-status`);
+
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(message.textContent.trim());
+        status.textContent = 'コピーしました';
+      } catch {
+        status.textContent = 'コピーできませんでした。上の文章を選択してコピーしてください。';
+      }
+    });
+  }
 })();
 </script>
-
-Chatモードでも、同じ一文で始められます。独立したエージェントを起動できない環境では、1つのチャット内でA〜Dの観点を順に適用してください。ページを開けない場合は、このREADMEの本文を貼り付けてください。ウェブ検索も使えない場合は、出馬表・馬場・オッズなど、分析に必要な未確認情報の提示を求めてください。
 
 ## 0. 最初の返信でできることを説明し、レースと予算を確認する
 
@@ -72,6 +85,12 @@ Chatモードでも、同じ一文で始められます。独立したエージ�
 2. **馬券戦略** — 確認した予算で、券種・買い目・金額を決める。少額の予算超過は、ユーザーが許容した場合に検討する。
 
 利用できる場合は専門エージェント4人を起動し、あなたが議長を務めてください。エージェントを起動できない環境では、その旨を明示し、A〜Dの観点に沿って分析と再点検を進めてください。A〜Cには共通の事実データを渡し、互いの初回結論を共有せずに独立分析させてください。議長が着順予想をまとめた後、Dが馬券を設計してください。両方の結論が出た段階で、議長が残る懸念を再点検してください。
+
+### 前日版と当日版の扱い
+
+開催前日に予想する場合は「前日版」と明記し、当日未発表の情報と見直し条件を示してください。回答の末尾で、当日は同じチャットで「当日版を出して」と頼めることを案内してください。
+
+同じチャットで当日版を求められたら、変更の指定がない限り前回のレース・予算・上限条件を引き継いでください。新たに確認した当日情報を使って、前日の結論を前提にせず着順と買い目を再評価してください。未発表・未確認の情報は明記してください。再評価した後で前日版と比較し、1〜3着、順位不問の上位3頭、買い目・配分・購入総額の変更点と理由を示してください。変更がなければ、その判断を支えた当日情報を示してください。
 
 ## 1. 最新情報と過去走データを確認する
 
