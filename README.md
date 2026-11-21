@@ -12,7 +12,32 @@ JRAのGⅠ・GⅡを対象に、**1〜3着の予想**と**予算内での馬券�
 
 **推奨はWorkモードです。** Workを開いて、次の一文を送ってください。
 
-> https://yurukanbeers.github.io/jra-race-council/ を開き、このページの手順で進めてください。最初の返信で、このプロンプトでできることを簡潔に説明してから、未指定のレース名と予算を聞いてください。
+<blockquote>
+<p id="chatgpt-launch-message">https://yurukanbeers.github.io/jra-race-council/ を開き、このページの手順で進めてください。最初の返信で、このプロンプトでできることを簡潔に説明してから、未指定のレース名と予算を聞いてください。</p>
+</blockquote>
+
+<button type="button" id="copy-chatgpt-launch-message" hidden>起動メッセージをコピー</button>
+<span id="copy-chatgpt-launch-status" role="status"></span>
+
+<script>
+(() => {
+  const message = document.getElementById('chatgpt-launch-message');
+  const button = document.getElementById('copy-chatgpt-launch-message');
+  const status = document.getElementById('copy-chatgpt-launch-status');
+
+  if (!navigator.clipboard?.writeText) return;
+
+  button.hidden = false;
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(message.textContent.trim());
+      status.textContent = 'コピーしました';
+    } catch {
+      status.textContent = 'コピーできませんでした。上の文章を選択してコピーしてください。';
+    }
+  });
+})();
+</script>
 
 Chatモードでも、同じ一文で始められます。独立したエージェントを起動できない環境では、1つのチャット内でA〜Dの観点を順に適用してください。ページを開けない場合は、このREADMEの本文を貼り付けてください。ウェブ検索も使えない場合は、出馬表・馬場・オッズなど、分析に必要な未確認情報の提示を求めてください。
 
